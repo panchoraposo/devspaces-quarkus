@@ -1,0 +1,55 @@
+schemaVersion: 2.2.2
+metadata:
+  name: quarkus-greetings
+attributes:
+  memoryRequest: 512Mi
+  memoryLimit: 1Giå
+components:
+  - name: tools
+    container:
+      image: registry.access.redhat.com/ubi9/openjdk-17:1.20-2
+      command: ["tail", "-f", "/dev/null"]
+      memoryLimit: 512Mi
+      mountSources: true
+      endpoints:
+        - name: https-maven
+          targetPort: 8080
+          protocol: https
+        - exposure: none
+          name: debug
+          targetPort: 5858
+      volumeMounts:
+        - name: m2
+          path: /home/user/.m2
+      env:
+        - name: DEBUG_PORT
+          value: '5858'
+
+  - name: m2
+    volume:
+      size: 1Gi
+
+commands:
+  - id: build
+    exec:
+      component: tools
+      commandLine: "mvn clean package -Dquarkus.profile=dev"
+      workingDir: ${PROJECTS_ROOT}/quarkus-greetings
+      group:
+        kind: build
+
+  - id: dev
+    exec:
+      component: tools
+      commandLine: "mvn quarkus:dev -Dquarkus.profile=dev"
+      workingDir: ${PROJECTS_ROOT}/quarkus-greetings
+      group:
+        kind: run
+
+  - id: test
+    exec:
+      component: tools
+      commandLine: "mvn test -Dquarkus.profile=test"
+      workingDir: ${PROJECTS_ROOT}/quarkus-greetings
+      group:
+        kind: test
