@@ -1,0 +1,41 @@
+schemaVersion: 2.2.2
+metadata:
+  name: nodejs-greetings
+  language: "JavaScript"
+  projectType: "Node.js"
+attributes:
+  memoryRequest: 512Mi
+  memoryLimit: 1Gi
+parent:
+  id: nodejs
+  version: 2.2.0
+  registryUrl: "https://registry.devfile.io"
+components:
+  - name: nodejs
+    container:
+      image: registry.redhat.io/ubi9/nodejs-20
+      memoryLimit: 1024Mi
+      mountSources: true
+      sourceMapping: /project
+      endpoints:
+        - name: http-3000
+          targetPort: 3000
+
+commands:
+  - id: install
+    exec:
+      component: nodejs
+      commandLine: npm install
+      workingDir: .
+    
+  - id: run
+    exec:
+      component: nodejs
+      commandLine: node index.js
+      workingDir: .
+
+  - id: deploy
+    exec:
+      component: nodejs
+      commandLine: npm run openshift
+      workingDir: .
