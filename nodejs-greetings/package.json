@@ -1,0 +1,16 @@
+{
+  "name": "nodejs-greetings",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "openshift": "nodeshift --expose --dockerImage=registry.redhat.io/ubi9/nodejs-20",
+    "start": "node app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "nodeshift": "^11.3.0"
+  }
+}
