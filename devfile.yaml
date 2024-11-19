@@ -48,7 +48,7 @@ commands:
   - id: install-git
     exec:
       component: tools
-      commandLine: "dnf install -y git"
+      commandLine: "yum install -y git"
       workingDir: /projects
       group:
         kind: build
