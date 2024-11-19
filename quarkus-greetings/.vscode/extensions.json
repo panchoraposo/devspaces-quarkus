@@ -6,7 +6,6 @@
         "vscjava.vscode-maven",
         "redhat.vscode-quarkus",
         "redhat.fabric8-analytics",
-        "redhat.vscode-tekton-pipelines",
-        "redhat.vscode-xml"
+        "redhat.vscode-tekton-pipelines"
     ]
 }
