@@ -45,6 +45,14 @@ components:
       size: 1Gi
 
 commands:
+  - id: install-git
+    exec:
+      component: tools
+      commandLine: "dnf install -y git"
+      workingDir: /projects
+      group:
+        kind: build
+
   - id: build
     exec:
       component: tools
