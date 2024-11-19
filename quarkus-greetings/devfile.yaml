@@ -3,8 +3,24 @@ metadata:
   name: quarkus-greetings
 attributes:
   memoryRequest: 512Mi
-  memoryLimit: 1Giå
+  memoryLimit: 1Gi
 components:
+  - name: quarkus
+    container:
+      image: quay.io/eclipse/che-quarkus:latest
+      memoryLimit: 2Gi
+      memoryRequest: 1Gi
+      env:
+        - name: DB_USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: my-database-credentials
+              key: username
+        - name: DB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: my-database-credentials
+              key: password
   - name: tools
     container:
       image: registry.access.redhat.com/ubi9/openjdk-17:1.20-2
@@ -12,18 +28,30 @@ components:
       memoryLimit: 512Mi
       mountSources: true
       endpoints:
-        - name: https-maven
+        - name: https
           targetPort: 8080
           protocol: https
-        - exposure: none
-          name: debug
+          exposure: public
+        - name: debug
           targetPort: 5858
+          protocol: https
+          exposure: public
       volumeMounts:
         - name: m2
           path: /home/user/.m2
       env:
         - name: DEBUG_PORT
           value: '5858'
+        - name: QUARKUS_LAUNCH_DEV_MODE
+          value: "true"
+        - name: QUARKUS_PROFILE
+          value: "dev"
+        - name: JAVA_TOOL_OPTIONS
+          value: "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005"
+        
+      args:
+        - "sleep"
+        - "infinity"
 
   - name: m2
     volume:
@@ -53,3 +81,11 @@ commands:
       workingDir: ${PROJECTS_ROOT}/quarkus-greetings
       group:
         kind: test
+  
+  - id: s2i-openshift
+    exec:
+      component: tools
+      commandLine: mvn clean package -Dquarkus.kubernetes.deploy=true
+      workingDir: ${PROJECTS_ROOT}/quarkus-greetings
+      group:
+        kind: deploy
