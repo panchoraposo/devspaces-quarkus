@@ -1,6 +1,8 @@
-schemaVersion: 2.2.2
+schemaVersion: 2.2.0
 metadata:
   name: quarkus-greetings
+  language: "Java"
+  projectType: "Quarkus"
 attributes:
   memoryRequest: 512Mi
   memoryLimit: 1Gi
@@ -10,6 +12,7 @@ components:
       image: registry.access.redhat.com/ubi9/openjdk-17:1.20-2
       command: ["tail", "-f", "/dev/null"]
       memoryLimit: 512Mi
+      cpuLimit: 500m
       mountSources: true
       endpoints:
         - name: https
@@ -21,7 +24,7 @@ components:
           protocol: https
           exposure: public
       volumeMounts:
-        - name: m2
+        - name: app-cache
           path: /home/user/.m2
       env:
         - name: DEBUG_PORT
@@ -37,7 +40,7 @@ components:
         - "sleep"
         - "infinity"
 
-  - name: m2
+  - name: app-cache
     volume:
       size: 1Gi
 
