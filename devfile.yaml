@@ -55,7 +55,7 @@ commands:
     exec:
       component: tools
       commandLine: "mvn clean package -Dquarkus.profile=dev"
-      workingDir: ${PROJECTS_ROOT}/quarkus-greetings
+      workingDir: ${PROJECT_SOURCE}/quarkus-greetings
       group:
         kind: build
 
@@ -63,7 +63,7 @@ commands:
     exec:
       component: tools
       commandLine: "mvn quarkus:dev -Dquarkus.profile=dev"
-      workingDir: ${PROJECTS_ROOT}/quarkus-greetings
+      workingDir: ${PROJECT_SOURCE}/quarkus-greetings
       group:
         kind: run
 
@@ -71,7 +71,7 @@ commands:
     exec:
       component: tools
       commandLine: "mvn test -Dquarkus.profile=test"
-      workingDir: ${PROJECTS_ROOT}/quarkus-greetings
+      workingDir: ${PROJECT_SOURCE}/quarkus-greetings
       group:
         kind: test
   
@@ -79,6 +79,6 @@ commands:
     exec:
       component: tools
       commandLine: mvn clean package -Dquarkus.kubernetes.deploy=true
-      workingDir: ${PROJECTS_ROOT}/quarkus-greetings
+      workingDir: ${PROJECT_SOURCE}/quarkus-greetings
       group:
         kind: deploy
