@@ -33,8 +33,6 @@ components:
           value: "true"
         - name: QUARKUS_PROFILE
           value: "dev"
-        - name: JAVA_TOOL_OPTIONS
-          value: "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005"
         
       args:
         - "sleep"
